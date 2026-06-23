@@ -1,3 +1,5 @@
+"""In this file the product class is defined"""
+
 class Product:
     try:
         def __init__(self, name, price, quantity):
