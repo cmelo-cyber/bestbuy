@@ -1,6 +1,8 @@
+"""This is the main file for the program"""
+
 import products
 import store
-from products import Product
+
 
 
 
@@ -14,10 +16,10 @@ best_buy = store.Store(product_list)
 
 #Define a Dictionary for the order function
 prod_choices = {}
-products = best_buy.get_all_products()
+all_products = best_buy.get_all_products()
 n = 1
 
-for product in products:
+for product in all_products:
     prod_choices[n] = product
     n += 1
 
@@ -37,7 +39,7 @@ def start(store):
     try:
         choice = int(input("Please choose a number: "))
     except ValueError:
-        print("Please enter a valid number!")
+        print("Error with your choice! Try again")
         return False
 
     if choice == 1:
@@ -60,6 +62,9 @@ def start(store):
     elif choice == 4:
         return True
 
+    elif choice <= 0 or choice > 4:
+        print("Please enter a number from 1 to 4!")
+        return False
 
 def list_all_products():
     """This function prints all the products which are called by get_all_products() und numerates them"""
@@ -82,14 +87,30 @@ def make_an_order():
         order_number = input("Which product do you want ?")
         amount = input("How many do you want?")
 
-        if order_number =="" and amount =="":       #Check if the user want to return to Store
-            ordering = False
-            #print("You return to start!")
+
+        if order_number =="" and amount =="":       # Check if the user want to return to Store
             return order_list
 
-        amount = int(amount)
-        #print(prod_choices)                        #prod_choices is a dict defined at the beginning
-        product = prod_choices[int(order_number)]
+        if order_number=="" or amount =="":
+            print("Please fill both fields")
+            continue
+
+
+        try:
+            amount = int(amount)
+            if amount <= 0:
+                print("Amount must be greater than 0")
+                continue
+        except ValueError:
+            print("Please enter a valid quantity")
+            continue
+        #print(prod_choices)
+        #prod_choices is a dict defined at the beginning
+        try:
+            product = prod_choices[int(order_number)]
+        except (ValueError, KeyError):
+            print("Invalid product number.")
+            continue
         order_list.append((product,amount))
         print("Product added to list!")
         #for order in order_list:
